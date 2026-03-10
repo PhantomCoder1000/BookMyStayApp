@@ -379,6 +379,67 @@ class BookingRequestQueue {
  *
  * @version 5.0
  */
+
+
+/**
+ * ====================================================================
+ * CLASS - BookingService
+ * ====================================================================
+ *
+ * Use Case 6: Room Booking Process
+ *
+ * Description:
+ * This class handles the actual room reservation logic.
+ * It verifies room availability and updates the centralized
+ * inventory upon successful booking.
+ *
+ * @version 6.0
+ */
+class BookingService {
+
+    /**
+     * Processes a single booking request by checking availability
+     * and decrementing the inventory if a room is available.
+     *
+     * @param inventory the centralized room inventory
+     * @param reservation the pending booking request
+     */
+    public void processBooking(RoomInventory inventory, Reservation reservation) {
+        String roomType = reservation.getRoomType();
+        String guestName = reservation.getGuestName();
+        Map<String, Integer> availabilityMap = inventory.getRoomAvailability();
+
+        System.out.println("Processing booking for Guest: " + guestName + ", Room Type: " + roomType);
+
+        // Check if the requested room type exists and has available inventory
+        if (availabilityMap.containsKey(roomType) && availabilityMap.get(roomType) > 0) {
+
+            // Decrement the available room count by 1
+            int currentAvailability = availabilityMap.get(roomType);
+            inventory.updateAvailability(roomType, currentAvailability - 1);
+
+            System.out.println("Booking confirmed for " + guestName + " in a " + roomType);
+        } else {
+            // Handle scenario where room is unavailable
+            System.out.println("Booking failed for " + guestName + ". " + roomType + " is fully booked.");
+        }
+    }
+}
+
+/**
+ * ====================================================================
+ * MAIN CLASS - UseCase6BookingProcess
+ * ====================================================================
+ *
+ * Use Case 6: Room Booking Process
+ *
+ * Description:
+ * This class demonstrates the complete reservation lifecycle.
+ * It queues booking requests, processes them in FIFO order,
+ * and actively updates the inventory.
+ *
+ * @version 6.0
+ */
 public class BookMyStay {
 
     /**
@@ -387,28 +448,27 @@ public class BookMyStay {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
+        System.out.println("Booking Process\n");
 
-        // Display application header
-        System.out.println("Booking Request Queue");
+        // 1. Initialize central inventory
+        RoomInventory inventory = new RoomInventory();
 
-        // Initialize booking queue
+        // 2. Initialize booking queue
         BookingRequestQueue bookingQueue = new BookingRequestQueue();
 
-        // Create booking requests
-        Reservation r1 = new Reservation("Abhi", "Single");
-        Reservation r2 = new Reservation("Subha", "Double");
-        Reservation r3 = new Reservation("Vanmathi", "Suite");
+        // 3. Create and enqueue booking requests
+        // Note: Room types must perfectly match the keys in RoomInventory
+        bookingQueue.addRequest(new Reservation("Abhi", "Single Room"));
+        bookingQueue.addRequest(new Reservation("Subha", "Double Room"));
+        bookingQueue.addRequest(new Reservation("Vanmathi", "Suite Room"));
 
-        // Add requests to the queue
-        bookingQueue.addRequest(r1);
-        bookingQueue.addRequest(r2);
-        bookingQueue.addRequest(r3);
+        // 4. Initialize booking service
+        BookingService bookingService = new BookingService();
 
-        // Display queued booking requests in FIFO order
+        // 5. Process all pending requests in FIFO order
         while (bookingQueue.hasPendingRequests()) {
             Reservation currentRequest = bookingQueue.getNextRequest();
-            System.out.println("Processing booking for Guest: " + currentRequest.getGuestName()
-                    + ", Room Type: " + currentRequest.getRoomType());
+            bookingService.processBooking(inventory, currentRequest);
         }
     }
 }
