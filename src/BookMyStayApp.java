@@ -1,5 +1,5 @@
 
-public class BookMyStay {
+public class BookMyStayApp {
     public static void main(String[] args) {
         // Display the welcome message
         System.out.println("Welcome to the Hotel Booking Management System");
