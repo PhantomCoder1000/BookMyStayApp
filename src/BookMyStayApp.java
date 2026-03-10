@@ -98,10 +98,6 @@ class SuiteRoom extends Room {
     }
 }
 
-
-
-
-
 /**
  * ====================================================================
  * CLASS - RoomInventory
@@ -171,7 +167,6 @@ class RoomInventory {
         roomAvailability.put(roomType, count);
     }
 }
-
 
 /**
  * ====================================================================
@@ -254,8 +249,7 @@ class RoomSearchService {
  *
  * @version 4.0
  */
-public class BookMyStay {
-
+public class BookMyStayApp {
     /**
      * Application entry point.
      *
