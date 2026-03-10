@@ -1,3 +1,5 @@
+import java.util.Map;
+import java.util.HashMap;
 /**
  * ====================================================================
  * ABSTRACT CLASS - Room
@@ -96,47 +98,116 @@ class SuiteRoom extends Room {
     }
 }
 
+
+
+
+
 /**
  * ====================================================================
- * MAIN CLASS - UseCase2RoomInitialization
+ * CLASS - RoomInventory
  * ====================================================================
- * * Use Case 2: Basic Room Types & Static Availability
- * * Description:
- * This class demonstrates room initialization
- * using domain models before introducing
- * centralized inventory management.
- * * Availability is represented using
- * simple variables to highlight limitations.
- * * @version 2.0
+ *
+ * Use Case 3: Centralized Room Inventory Management
+ *
+ * Description:
+ * This class acts as the single source of truth
+ * for room availability in the hotel.
+ *
+ * Room pricing and characteristics are obtained
+ * from Room objects, not duplicated here.
+ *
+ * This avoids multiple sources of truth and
+ * keeps responsibilities clearly separated.
+ *
+ * @version 3.0
  */
+class RoomInventory {
+
+    /**
+     * Stores available room count for each room type.
+     *
+     * Key   -> Room type name
+     * Value -> Available room count
+     */
+    private Map<String, Integer> roomAvailability;
+
+    /**
+     * Constructor initializes the inventory
+     * with default availability values.
+     */
+    public RoomInventory() {
+        this.roomAvailability = new HashMap<>();
+        initializeInventory();
+    }
+
+    /**
+     * Initializes room availability data.
+     *
+     * This method centralizes inventory setup
+     * instead of using scattered variables.
+     */
+    private void initializeInventory() {
+        roomAvailability.put("Single Room", 5);
+        roomAvailability.put("Double Room", 3);
+        roomAvailability.put("Suite Room", 2);
+    }
+
+    /**
+     * Returns the current availability map.
+     *
+     * @return map of room type to available count
+     */
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    /**
+     * Updates availability for a specific room type.
+     *
+     * @param roomType the room type to update
+     * @param count new availability count
+     */
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
+}
+
 public class BookMyStay {
 
     /**
      * Application entry point.
-     * * @param args Command-line arguments
+     *
+     * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hotel Room Initialization\n");
+        // Display the welcome message
+        System.out.println("Welcome to the Hotel Booking Management System");
 
-        // Single Room Initialization & Output
+        // Confirm successful initialization
+        System.out.println("System initialized successfully.\n");
+
+        System.out.println("Hotel Room Inventory Status\n");
+
+        // Initialize centralized inventory
+        RoomInventory inventory = new RoomInventory();
+        Map<String, Integer> availability = inventory.getRoomAvailability();
+
+        // Single Room setup and display
         SingleRoom singleRoom = new SingleRoom();
-        int singleAvailable = 5;
         System.out.println("Single Room:");
         singleRoom.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable + "\n");
+        System.out.println("Available Rooms: " + availability.get("Single Room") + "\n");
 
-        // Double Room Initialization & Output
+        // Double Room setup and display
         DoubleRoom doubleRoom = new DoubleRoom();
-        int doubleAvailable = 3;
         System.out.println("Double Room:");
         doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable + "\n");
+        System.out.println("Available Rooms: " + availability.get("Double Room") + "\n");
 
-        // Suite Room Initialization & Output
+        // Suite Room setup and display
         SuiteRoom suiteRoom = new SuiteRoom();
-        int suiteAvailable = 2;
         System.out.println("Suite Room:");
         suiteRoom.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
+        System.out.println("Available Rooms: " + availability.get("Suite Room"));
     }
 }
