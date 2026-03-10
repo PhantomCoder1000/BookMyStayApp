@@ -109,7 +109,7 @@ class SuiteRoom extends Room {
  * simple variables to highlight limitations.
  * * @version 2.0
  */
-public class BookMyStay {
+public class BookMyStayApp {
 
     /**
      * Application entry point.
