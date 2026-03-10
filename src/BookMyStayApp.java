@@ -99,9 +99,6 @@ class SuiteRoom extends Room {
 }
 
 
-
-
-
 /**
  * ====================================================================
  * CLASS - RoomInventory
@@ -122,7 +119,6 @@ class SuiteRoom extends Room {
  * @version 3.0
  */
 class RoomInventory {
-
     /**
      * Stores available room count for each room type.
      *
@@ -172,8 +168,7 @@ class RoomInventory {
     }
 }
 
-public class BookMyStay {
-
+public class BookMyStayApp {
     /**
      * Application entry point.
      *
