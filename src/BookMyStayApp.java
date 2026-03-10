@@ -440,7 +440,7 @@ class BookingService {
  *
  * @version 6.0
  */
-public class BookMyStay {
+public class BookMyStayApp {
 
     /**
      * Application entry point.
