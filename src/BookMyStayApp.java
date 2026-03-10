@@ -379,7 +379,7 @@ class BookingRequestQueue {
  *
  * @version 5.0
  */
-public class BookMyStay {
+public class BookMyStayApp {
 
     /**
      * Application entry point.
